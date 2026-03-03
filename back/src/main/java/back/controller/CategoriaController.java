@@ -9,7 +9,7 @@ import java.util.List;
 import back.model.Categoria;
 import back.service.CategoriaService;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:5173/")
 @RestController
 @RequestMapping("/api/categorias")
 public class CategoriaController {
