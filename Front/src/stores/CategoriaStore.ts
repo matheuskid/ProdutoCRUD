@@ -11,6 +11,7 @@ export const CategoriaStore = defineStore('categoria', {
       this.loading = true;
       try {
         const { data } = await CategoriaService.getAll();
+
         this.categorias = data;
       } finally {
         this.loading = false;
