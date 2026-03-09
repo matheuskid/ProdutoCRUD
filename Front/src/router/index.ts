@@ -10,12 +10,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Categorias',
     // Lazy loading: o componente só é carregado se o usuário acessar essa rota
     component: () => import('@/views/CategoriaView.vue')
+    },
+    {
+      path: '/produtos',
+      name: 'Produtos',
+      component: () => import('@/views/ProdutoView.vue')
     }
-  // {
-  //   path: '/produtos',
-  //   name: 'Produtos',
-  //   component: () => import('@/views/ProdutoView.vue')
-  // }
 ]
 
 const router = createRouter({
