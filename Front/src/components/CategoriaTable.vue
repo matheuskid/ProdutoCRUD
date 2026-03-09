@@ -6,7 +6,27 @@
     class="elevation-1"
   >
     <template #item.actions="{ item }">
-      <slot name="actions" :item="item" />
+      <div class="d-flex align-center">
+        <v-btn
+          icon="mdi-pencil"
+          variant="text"
+          color="primary"
+          size="small"
+          density="comfortable"
+          @click="$emit('edit', item)"
+          title="Editar"
+        />
+        
+        <v-btn
+          icon="mdi-delete"
+          variant="text"
+          color="error"
+          size="small"
+          density="comfortable"
+          @click="$emit('delete', item.id)"
+          title="Remover"
+        />
+      </div>
     </template>
   </v-data-table>
 </template>

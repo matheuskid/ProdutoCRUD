@@ -1,4 +1,7 @@
 import api from './api';
+import { categoriasMock } from './Mock';
+
+const useMock = import.meta.env.VITE_USE_MOCK === 'true';
 
 export interface Categoria {
   id: number;
@@ -6,5 +9,13 @@ export interface Categoria {
 }
 
 export const CategoriaService = {
-  getAll: () => api.get<Categoria[]>('/api/categorias')
+  getAll: () => {
+    if (useMock) {
+      return Promise.resolve({
+        data: categoriasMock
+      });
+    } else {
+      return api.get<Categoria[]>('/api/categorias');
+    }
+  }
 };
