@@ -23,7 +23,7 @@
           color="error"
           size="small"
           density="comfortable"
-          @click="$emit('delete', item.id)"
+          @click="$emit('delete', item.id, item.nome)"
           title="Remover"
         />
       </div>

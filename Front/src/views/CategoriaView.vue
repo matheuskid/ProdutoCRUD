@@ -32,8 +32,7 @@
     <v-dialog v-model="dialogDelete" max-width="400">
       <v-card title="Excluir Categoria">
         <v-card-text>
-          Tem certeza que deseja excluir a categoria <strong>{{ categoria.nome }}</strong>? 
-          Esta ação não pode ser desfeita.
+          Tem certeza que deseja excluir a categoria <strong>{{ categoria.nome }}</strong>?
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -83,8 +82,9 @@ const deletarCategoria = async () => {
   }
 };
 
-const abrirDelete = (id: number) => {
+const abrirDelete = (id: number, nome: string) => {
   categoria.value.id = id;
+  categoria.value.nome = nome;
   dialogDelete.value = true;
 };
 </script>
