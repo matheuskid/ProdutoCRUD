@@ -2,7 +2,8 @@
   <v-data-table
     :headers="headers" 
     :items="items" 
-    :loading="loading">
+    :loading="loading"
+    class="elevation-1">
 
     <template #item.categoria="{ item }">
       {{ item.categoria.nome }}
@@ -26,7 +27,7 @@
         color="error"
         size="small"
         density="comfortable"
-        @click="$emit('delete', item.id)"
+        @click="$emit('delete', item.id, item.nome)"
         title="Remover"
         />
     </div>

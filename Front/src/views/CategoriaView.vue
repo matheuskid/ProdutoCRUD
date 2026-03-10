@@ -13,7 +13,7 @@
     />
 
     <v-dialog v-model="dialog" max-width="500">
-      <v-card title="Nova Categoria">
+      <v-card :title="isEditMode ? 'Editar Categoria' : 'Nova Categoria'">
         <v-card-text>
           <v-text-field 
             v-model="categoria.nome" 

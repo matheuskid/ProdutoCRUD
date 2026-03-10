@@ -23,5 +23,6 @@ export const ProdutoService = {
     return api.get<Produto[]>('/api/produtos');
   },
   create: (data: Omit<Produto, 'id'>) => api.post('/api/produtos', data),
+  update: (data: Produto) => api.put(`/api/produtos/${data.id}`, data),
   delete: (id: number) => api.delete(`/api/produtos/${id}`)
 };
