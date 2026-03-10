@@ -1,5 +1,8 @@
 import { defineStore } from 'pinia';
 import { CategoriaService, type Categoria } from '@/services/CategoriaService';
+import { NotificationStore } from '@/stores/NotificationStore';
+
+const notify = NotificationStore();
 
 export const CategoriaStore = defineStore('categoria', {
   state: () => ({
@@ -12,6 +15,7 @@ export const CategoriaStore = defineStore('categoria', {
       try {
         const { data } = await CategoriaService.getAll();
         this.categorias = data;
+
       } finally {
         this.loading = false;
       }
@@ -23,6 +27,13 @@ export const CategoriaStore = defineStore('categoria', {
         const { data } = await CategoriaService.create(categoria);
         this.categorias.push(data);
         await this.listarCategorias();
+        notify.show('Categoria adicionada com sucesso!', 'success');
+      } catch (error: any) {
+        if (error.response?.status === 409) {
+          notify.show('Não é possível adicionar: esse nome já é usado.', 'error');
+        } else {
+          notify.show('Erro inesperado ao adicionar categoria.', 'error');
+        }
       } finally {
         this.loading = false;
       }
@@ -36,6 +47,14 @@ export const CategoriaStore = defineStore('categoria', {
         if (index !== -1) {
           this.categorias[index] = data;
         }
+        await this.listarCategorias();
+        notify.show('Categoria atualizada com sucesso!', 'success');
+      } catch (error: any) {
+        if (error.response?.status === 409) {
+          notify.show('Não é possível adicionar: esse nome já é usado.', 'error');
+        } else {
+          notify.show('Erro inesperado ao adicionar categoria.', 'error');
+        }
       } finally {
         this.loading = false;
       }
@@ -46,6 +65,13 @@ export const CategoriaStore = defineStore('categoria', {
       try {
         await CategoriaService.delete(id);
         this.categorias = this.categorias.filter((c) => c.id !== id);
+        notify.show('Categoria removida com sucesso!', 'success');
+      } catch (error: any) {
+        if (error.response?.status === 409) {
+          notify.show('Não é possível remover: produtos vinculados a esta categoria!', 'error');
+        } else {
+          notify.show('Erro inesperado ao remover categoria.', 'error');
+        }
       } finally {
         this.loading = false;
       }

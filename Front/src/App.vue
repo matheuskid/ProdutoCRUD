@@ -4,6 +4,13 @@
       <v-toolbar-title>Meu Sistema de Estoque</v-toolbar-title>
     </v-app-bar>
 
+    <v-snackbar v-model="snackbar.visible" :color="snackbar.color" timeout="3000">
+      {{ snackbar.text }}
+      <template v-slot:actions>
+        <v-btn variant="text" @click="snackbar.visible = false">Fechar</v-btn>
+      </template>
+    </v-snackbar>
+
     <v-navigation-drawer app permanent>
       <v-list>
         <v-list-item 
@@ -29,8 +36,8 @@
 </template>
 
 <script setup lang="ts">
-// Por enquanto, não precisamos de lógica aqui, 
-// apenas a estrutura do layout.
+  import { NotificationStore } from '@/stores/NotificationStore';
+  const snackbar = NotificationStore();
 </script>
 
 <style>

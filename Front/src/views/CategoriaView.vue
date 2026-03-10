@@ -39,7 +39,7 @@ import CategoriaTable from '@/components/CategoriaTable.vue';
 const store = CategoriaStore();
 const dialog = ref(false);
 const isEditMode = ref(false);
-const categoria = ref({ id: 0, nome: '' }); // inciando com 0 para atualizarCategoria nao reclamar
+const categoria = ref({ id: null, nome: '' });
 
 onMounted(() => store.listarCategorias());
 
