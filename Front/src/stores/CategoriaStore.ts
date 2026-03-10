@@ -7,7 +7,7 @@ export const CategoriaStore = defineStore('categoria', {
     loading: false
   }),
   actions: {
-    async fetchCategorias() {
+    async listarCategorias() {
       this.loading = true;
       try {
         const { data } = await CategoriaService.getAll();
@@ -17,12 +17,35 @@ export const CategoriaStore = defineStore('categoria', {
       }
     },
 
-    async criarCategoria(categoria: Omit<Categoria, 'id'>) {
+    async adicionarCategoria(categoria: Omit<Categoria, 'id'>) {
       this.loading = true;
       try {
         const { data } = await CategoriaService.create(categoria);
         this.categorias.push(data);
-        await this.fetchCategorias();
+        await this.listarCategorias();
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    async atualizarCategoria(categoria: Categoria) {
+      this.loading = true;
+      try {
+        const { data } = await CategoriaService.update(categoria.id, categoria);
+        const index = this.categorias.findIndex((c) => c.id === categoria.id);
+        if (index !== -1) {
+          this.categorias[index] = data;
+        }
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    async deletarCategoria(id: number) {
+      this.loading = true;
+      try {
+        await CategoriaService.delete(id);
+        this.categorias = this.categorias.filter((c) => c.id !== id);
       } finally {
         this.loading = false;
       }
