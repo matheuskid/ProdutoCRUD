@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import back.model.Produto;
-import back.model.NovoProdutoDTO;
 import back.service.ProdutoService;
 import jakarta.validation.Valid;
 
@@ -32,13 +31,13 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<Produto> postMethodName(@Valid @RequestBody NovoProdutoDTO novoProdutoDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.criarProduto(novoProdutoDTO));
+    public ResponseEntity<Produto> postMethodName(@Valid @RequestBody Produto produto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.criarProduto(produto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Produto> atualizarProduto(@PathVariable Long id, @Valid @RequestBody NovoProdutoDTO novoProduto) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.atualizarProduto(id, novoProduto));
+    public ResponseEntity<Produto> atualizarProduto(@PathVariable Long id, @Valid @RequestBody Produto produto) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.atualizarProduto(id, produto));
     }
 
     @DeleteMapping("/{id}")
