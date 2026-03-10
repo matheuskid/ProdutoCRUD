@@ -9,7 +9,7 @@
       :items="store.categorias" 
       :loading="store.loading"
       @edit="editarCategoria"
-      @delete="deletarCategoria"
+      @delete="abrirDelete"
     />
 
     <v-dialog v-model="dialog" max-width="500">
@@ -28,6 +28,20 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="dialogDelete" max-width="400">
+      <v-card title="Excluir Categoria">
+        <v-card-text>
+          Tem certeza que deseja excluir a categoria <strong>{{ categoria.nome }}</strong>? 
+          Esta ação não pode ser desfeita.
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn variant="text" @click="dialogDelete = false">Cancelar</v-btn>
+          <v-btn color="error" @click="deletarCategoria">Excluir</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -35,11 +49,13 @@
 import { ref, onMounted } from 'vue';
 import { CategoriaStore } from '@/stores/CategoriaStore';
 import CategoriaTable from '@/components/CategoriaTable.vue';
+import type { Categoria } from '@/services/CategoriaService';
 
 const store = CategoriaStore();
 const dialog = ref(false);
 const isEditMode = ref(false);
-const categoria = ref({ id: null, nome: '' });
+const categoria = ref<Categoria>({ nome: '' });
+const dialogDelete = ref(false);
 
 onMounted(() => store.listarCategorias());
 
@@ -50,17 +66,25 @@ const salvar = async () => {
     await store.adicionarCategoria(categoria.value);
   }
   dialog.value = false;
+  isEditMode.value = false;
+  categoria.value = { nome: '' };
 };
 
-const editarCategoria = (item: any) => {
+const editarCategoria = (item: Categoria) => {
   categoria.value = { ...item }; // Clona o item para não alterar a tabela direto
   isEditMode.value = true;
   dialog.value = true;
 };
 
-const deletarCategoria = async (id: number) => {
-  if (confirm('Tem certeza que deseja remover esta categoria?')) {
-    await store.deletarCategoria(id);
+const deletarCategoria = async () => {
+  if (categoria.value.id) {
+    await store.deletarCategoria(categoria.value.id);
+    dialogDelete.value = false;
   }
+};
+
+const abrirDelete = (id: number) => {
+  categoria.value.id = id;
+  dialogDelete.value = true;
 };
 </script>

@@ -42,12 +42,11 @@ export const CategoriaStore = defineStore('categoria', {
     async atualizarCategoria(categoria: Categoria) {
       this.loading = true;
       try {
-        const { data } = await CategoriaService.update(categoria.id, categoria);
+        const { data } = await CategoriaService.update(categoria);
         const index = this.categorias.findIndex((c) => c.id === categoria.id);
         if (index !== -1) {
           this.categorias[index] = data;
         }
-        await this.listarCategorias();
         notify.show('Categoria atualizada com sucesso!', 'success');
       } catch (error: any) {
         if (error.response?.status === 409) {

@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { nextTick } from 'vue';
 
 export const NotificationStore = defineStore('notification', {
   state: () => ({
@@ -8,10 +9,13 @@ export const NotificationStore = defineStore('notification', {
   }),
 
   actions: {
-    show(text: string, color: 'success' | 'error' = 'success') {
-      this.text = text;
-      this.color = color;
-      this.visible = true;
+    show(text: string, color: string) {
+      this.visible = false; // Fecha a anterior instantaneamente
+      nextTick(() => {
+        this.text = text;
+        this.color = color;
+        this.visible = true; // Abre a nova no próximo ciclo
+      });
     }
   }
 });
