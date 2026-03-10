@@ -31,6 +31,16 @@ public class Produto {
     public Produto() {
     }
 
+    public Produto(String nome_, BigDecimal preco_, Categoria categoria_) {
+        this.nome = nome_;
+        this.preco = preco_;
+        this.categoria = categoria_;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
     public String getNome() {
         return nome;
     }

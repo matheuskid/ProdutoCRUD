@@ -22,6 +22,10 @@ public class Categoria {
         this.nome = categoria.getNome();
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getNome() {
         return nome;
     }

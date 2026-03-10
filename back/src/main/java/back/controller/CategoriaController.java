@@ -31,17 +31,17 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public ResponseEntity<Categoria> postMethodName(@Valid @RequestBody Categoria categoria) {
+    public ResponseEntity<Categoria> criarCategoria(@Valid @RequestBody Categoria categoria) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.criarCategoria(categoria));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Categoria> putMethodName(@PathVariable String id, @Valid @RequestBody Categoria categoria) {
+    public ResponseEntity<Categoria> atualizarCategoria(@PathVariable String id, @Valid @RequestBody Categoria categoria) {
         return ResponseEntity.status(HttpStatus.OK).body(service.atualizarCategoria(Long.parseLong(id), categoria));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMethodName(@PathVariable Long id) {
+    public ResponseEntity<Void> deletarCategoria(@PathVariable Long id) {
         service.deletarCategoria(id);
         return ResponseEntity.noContent().build();
     }
