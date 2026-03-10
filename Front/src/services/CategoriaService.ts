@@ -17,5 +17,7 @@ export const CategoriaService = {
     } else {
       return api.get<Categoria[]>('/api/categorias');
     }
-  }
+  },
+
+  create: (data: Omit<Categoria, 'id'>) => { return api.post<Categoria>('/api/categorias', data); }
 };
