@@ -8,7 +8,7 @@
     <ProdutoTable 
       :items="produtoStore.produtos" 
       :loading="produtoStore.loading"
-      @edit="editarProduto"
+      @edit="abrirEdtiar"
       @delete="abrirDelete"
     />
 
@@ -52,18 +52,11 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="dialogDelete" max-width="400">
-      <v-card title="Excluir Produto">
-        <v-card-text>
-          Tem certeza que deseja excluir o produto <strong>{{ produto.nome }}</strong>?
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn variant="text" @click="dialogDelete = false">Cancelar</v-btn>
-          <v-btn color="error" @click="deletarProduto">Excluir</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <ConfirmDeleteDialog
+      v-model="dialogDelete"
+      :item-name="produto.nome"
+      @confirm="deletarProduto"
+      />
   </v-container>
 </template>
 
@@ -72,6 +65,7 @@ import { ref, onMounted } from 'vue';
 import { ProdutoStore } from '@/stores/ProdutoStore';
 import { CategoriaStore } from '@/stores/CategoriaStore';
 import ProdutoTable from '@/components/ProdutoTable.vue';
+import ConfirmDeleteDialog from '@/components/ConfirmDeleteDialog.vue';
 
 const produtoStore = ProdutoStore();
 const categoriaStore = CategoriaStore();
@@ -81,11 +75,11 @@ const dialogDelete = ref(false);
 const isEditMode = ref(false);
 
 // Inicialização seguindo o padrão que discutimos
-const produto = ref<any>({id: null, nome: '', preco: '', categoria: { id: null, nome: '' }});
+const produto = ref<any>({nome: '', preco: '', categoria: { nome: '' }});
 
 onMounted(() => {
   produtoStore.listarProdutos();
-  categoriaStore.listarCategorias(); // Carrega categorias para o Select
+  categoriaStore.listarCategorias();
 });
 
 const abrirNovo = () => {
@@ -94,7 +88,7 @@ const abrirNovo = () => {
   dialog.value = true;
 };
 
-const editarProduto = (item: any) => {
+const abrirEdtiar = (item: any) => {
   produto.value = JSON.parse(JSON.stringify(item));
   isEditMode.value = true;
   dialog.value = true;

@@ -8,7 +8,7 @@
     <CategoriaTable 
       :items="store.categorias" 
       :loading="store.loading"
-      @edit="editarCategoria"
+      @edit="abrirEditar"
       @delete="abrirDelete"
     />
 
@@ -29,18 +29,11 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="dialogDelete" max-width="400">
-      <v-card title="Excluir Categoria">
-        <v-card-text>
-          Tem certeza que deseja excluir a categoria <strong>{{ categoria.nome }}</strong>?
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn variant="text" @click="dialogDelete = false">Cancelar</v-btn>
-          <v-btn color="error" @click="deletarCategoria">Excluir</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <ConfirmDeleteDialog
+      v-model="dialogDelete"
+      :item-name="categoria.nome"
+      @confirm="deletarCategoria"
+      />
   </v-container>
 </template>
 
@@ -49,6 +42,7 @@ import { ref, onMounted } from 'vue';
 import { CategoriaStore } from '@/stores/CategoriaStore';
 import CategoriaTable from '@/components/CategoriaTable.vue';
 import type { Categoria } from '@/services/CategoriaService';
+import ConfirmDeleteDialog from '@/components/ConfirmDeleteDialog.vue';
 
 const store = CategoriaStore();
 const dialog = ref(false);
@@ -69,8 +63,8 @@ const salvar = async () => {
   categoria.value = { nome: '' };
 };
 
-const editarCategoria = (item: Categoria) => {
-  categoria.value = { ...item }; // Clona o item para não alterar a tabela direto
+const abrirEditar = (item: Categoria) => {
+  categoria.value = { ...item };
   isEditMode.value = true;
   dialog.value = true;
 };
