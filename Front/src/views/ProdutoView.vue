@@ -15,39 +15,44 @@
     <v-dialog v-model="dialog" max-width="600">
       <v-card :title="isEditMode ? 'Editar Produto' : 'Novo Produto'">
         <v-card-text>
-          <v-row>
-            <v-col cols="12">
-              <v-text-field 
-                v-model="produto.nome" 
-                label="Nome do Produto" 
-                variant="outlined"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="6">
-              <v-text-field 
-                v-model="produto.preco" 
-                label="Preço" 
-                prefix="R$"
-                type="number"
-                variant="outlined"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="6">
-              <v-select
-                v-model="produto.categoria.id" 
-                :items="categoriaStore.categorias"
-                item-title="nome"
-                item-value="id"
-                label="Categoria"
-                variant="outlined"
-              ></v-select>
-            </v-col>
-          </v-row>
+          <v-form ref="formRef">
+            <v-row>
+              <v-col cols="12">
+                <v-text-field 
+                  v-model="produto.nome"
+                  :rules = "[rules.required, rules.noEmpty]"
+                  label="Nome do Produto" 
+                  variant="outlined"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-text-field 
+                  v-model="produto.preco" 
+                  :rules = "[rules.required, rules.positivo, rules.isNumber]"
+                  label="Preço" 
+                  prefix="R$"
+                  type="number"
+                  variant="outlined"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-select
+                  v-model="produto.categoria.id" 
+                  :items="categoriaStore.categorias"
+                  :rules = "[rules.required]"
+                  item-title="nome"
+                  item-value="id"
+                  label="Categoria"
+                  variant="outlined"
+                ></v-select>
+              </v-col>
+            </v-row>
+          </v-form>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn variant="text" @click="fecharDialog">Cancelar</v-btn>
-          <v-btn color="primary" @click="salvar">Salvar</v-btn>
+          <v-btn color="primary" @click="validarESalvar">Salvar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -67,6 +72,7 @@ import { CategoriaStore } from '@/stores/CategoriaStore';
 import ProdutoTable from '@/components/ProdutoTable.vue';
 import ConfirmDeleteDialog from '@/components/ConfirmDeleteDialog.vue';
 import type { Produto } from '@/services/ProdutoService';
+import { rules } from '@/utils/Rules';
 
 const produtoStore = ProdutoStore();
 const categoriaStore = CategoriaStore();
@@ -74,6 +80,7 @@ const categoriaStore = CategoriaStore();
 const dialog = ref(false);
 const dialogDelete = ref(false);
 const isEditMode = ref(false);
+const formRef = ref<any>(null);
 
 const criarProdutoVazio = (): Produto => ({
   nome: '',
@@ -88,6 +95,15 @@ onMounted(() => {
   produtoStore.listarProdutos();
   categoriaStore.listarCategorias();
 });
+
+const validarESalvar = async () => {
+  const { valid } = await formRef.value.validate();
+
+  if (valid) {
+    salvar();
+    fecharDialog();
+  }
+};
 
 const abrirNovo = () => {
   isEditMode.value = false;
@@ -113,7 +129,6 @@ const salvar = async () => {
   } else {
     await produtoStore.adicionarProduto(produto.value);
   }
-  fecharDialog();
 };
 
 const deletarProduto = async () => {
