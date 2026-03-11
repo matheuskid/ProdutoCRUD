@@ -15,7 +15,6 @@ export const CategoriaStore = defineStore('categoria', {
       try {
         const { data } = await CategoriaService.getAll();
         this.categorias = data;
-
       } finally {
         this.loading = false;
       }
@@ -26,7 +25,6 @@ export const CategoriaStore = defineStore('categoria', {
       try {
         const { data } = await CategoriaService.create(categoria);
         this.categorias.push(data);
-        await this.listarCategorias();
         notify.show('Categoria adicionada com sucesso!', 'success');
       } catch (error: any) {
         if (error.response?.status === 409) {

@@ -66,6 +66,7 @@ import { ProdutoStore } from '@/stores/ProdutoStore';
 import { CategoriaStore } from '@/stores/CategoriaStore';
 import ProdutoTable from '@/components/ProdutoTable.vue';
 import ConfirmDeleteDialog from '@/components/ConfirmDeleteDialog.vue';
+import type { Produto } from '@/services/ProdutoService';
 
 const produtoStore = ProdutoStore();
 const categoriaStore = CategoriaStore();
@@ -74,8 +75,14 @@ const dialog = ref(false);
 const dialogDelete = ref(false);
 const isEditMode = ref(false);
 
+const criarProdutoVazio = (): Produto => ({
+  nome: '',
+  preco: '',
+  categoria: { nome: '' }
+});
+
 // Inicialização seguindo o padrão que discutimos
-const produto = ref<any>({nome: '', preco: '', categoria: { nome: '' }});
+const produto = ref<Produto>(criarProdutoVazio());
 
 onMounted(() => {
   produtoStore.listarProdutos();
@@ -84,14 +91,20 @@ onMounted(() => {
 
 const abrirNovo = () => {
   isEditMode.value = false;
-  produto.value = { id: null, nome: '', preco: '', categoria: { id: null, nome: '' } };
+  produto.value = criarProdutoVazio();
   dialog.value = true;
 };
 
-const abrirEdtiar = (item: any) => {
+const abrirEdtiar = (item: Produto) => {
   produto.value = JSON.parse(JSON.stringify(item));
   isEditMode.value = true;
   dialog.value = true;
+};
+
+const abrirDelete = (id: number, nome: string) => {
+  produto.value.id = id;
+  produto.value.nome = nome;
+  dialogDelete.value = true;
 };
 
 const salvar = async () => {
@@ -103,22 +116,17 @@ const salvar = async () => {
   fecharDialog();
 };
 
-const fecharDialog = () => {
-  dialog.value = false;
-  isEditMode.value = false;
-  produto.value = {id: null, nome: '', preco: '', categoria: { id: null, nome: '' } };
-};
-
-const abrirDelete = (id: number, nome: string) => {
-  produto.value.id = id;
-  produto.value.nome = nome;
-  dialogDelete.value = true;
-};
-
 const deletarProduto = async () => {
   if (produto.value.id) {
     await produtoStore.deletarProduto(produto.value.id);
     dialogDelete.value = false;
   }
+  produto.value = criarProdutoVazio();
+};
+
+const fecharDialog = () => {
+  dialog.value = false;
+  isEditMode.value = false;
+  produto.value = criarProdutoVazio();
 };
 </script>

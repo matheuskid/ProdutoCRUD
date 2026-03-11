@@ -25,7 +25,6 @@ export const ProdutoStore = defineStore('produto', {
       try {
         const { data } = await ProdutoService.create(produto);
         this.produtos.push(data);
-        await this.listarProdutos();
         notify.show('Produto adicionado com sucesso!', 'success');
       } catch (error: any) {
         notify.show('Erro inesperado ao adicionar produto.', 'error');

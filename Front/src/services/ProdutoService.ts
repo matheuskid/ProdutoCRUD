@@ -3,9 +3,9 @@ import api from './api';
 export interface Produto {
   id?: number; // Opcional porque ao criar, o ID é null
   nome: string;
-  preco: number;
+  preco: number | string;
   categoria: {
-    id: number;
+    id?: number;
     nome: string;
   };
 }

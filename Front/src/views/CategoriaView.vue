@@ -2,7 +2,7 @@
   <v-container>
     <div class="d-flex justify-space-between align-center mb-4">
       <h1>Categorias</h1>
-      <v-btn color="primary" @click="dialog = true">Nova Categoria</v-btn>
+      <v-btn color="primary" @click="abrirNova">Nova Categoria</v-btn>
     </div>
     
     <CategoriaTable 
@@ -23,7 +23,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn variant="text" @click="dialog = false, isEditMode = false">Cancelar</v-btn>
+          <v-btn variant="text" @click="fecharDialog">Cancelar</v-btn>
           <v-btn color="primary" @click="salvar">Salvar</v-btn>
         </v-card-actions>
       </v-card>
@@ -47,10 +47,30 @@ import ConfirmDeleteDialog from '@/components/ConfirmDeleteDialog.vue';
 const store = CategoriaStore();
 const dialog = ref(false);
 const isEditMode = ref(false);
-const categoria = ref<Categoria>({ nome: '' });
 const dialogDelete = ref(false);
 
+const criarCategoriaVazia = (): Categoria => ({ nome: '' });
+
+const categoria = ref<Categoria>(criarCategoriaVazia());
+
 onMounted(() => store.listarCategorias());
+
+const abrirNova = () => {
+  isEditMode.value = false;
+  dialog.value = true;
+}; 
+
+const abrirEditar = (item: Categoria) => {
+  categoria.value = JSON.parse(JSON.stringify(item));
+  isEditMode.value = true;
+  dialog.value = true;
+};
+
+const abrirDelete = (id: number, nome: string) => {
+  categoria.value.id = id;
+  categoria.value.nome = nome;
+  dialogDelete.value = true;
+};
 
 const salvar = async () => {
   if (isEditMode.value) {
@@ -60,13 +80,7 @@ const salvar = async () => {
   }
   dialog.value = false;
   isEditMode.value = false;
-  categoria.value = { nome: '' };
-};
-
-const abrirEditar = (item: Categoria) => {
-  categoria.value = { ...item };
-  isEditMode.value = true;
-  dialog.value = true;
+  categoria.value = criarCategoriaVazia();
 };
 
 const deletarCategoria = async () => {
@@ -74,11 +88,12 @@ const deletarCategoria = async () => {
     await store.deletarCategoria(categoria.value.id);
     dialogDelete.value = false;
   }
+  categoria.value = criarCategoriaVazia();
 };
 
-const abrirDelete = (id: number, nome: string) => {
-  categoria.value.id = id;
-  categoria.value.nome = nome;
-  dialogDelete.value = true;
+const fecharDialog = () => {
+  dialog.value = false;
+  isEditMode.value = false;
+  categoria.value = criarCategoriaVazia();
 };
 </script>
