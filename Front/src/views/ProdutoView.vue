@@ -37,11 +37,11 @@
               </v-col>
               <v-col cols="6">
                 <v-select
-                  v-model="produto.categoria.id" 
+                  v-model="produto.categoria" 
                   :items="categoriaStore.categorias"
                   :rules = "[rules.required]"
                   item-title="nome"
-                  item-value="id"
+                  return-object
                   label="Categoria"
                   variant="outlined"
                 ></v-select>
