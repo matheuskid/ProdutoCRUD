@@ -110,8 +110,6 @@ const validarESalvar = async () => {
 };
 
 const abrirNovo = () => {
-  isEditMode.value = false;
-  produto.value = criarProdutoVazio();
   dialog.value = true;
 };
 

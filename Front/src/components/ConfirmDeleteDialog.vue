@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="internalValue" max-width="450">
+  <v-dialog v-model="model" max-width="450">
     <v-card title="Excluir Item">
 
       <v-card-text class="pt-4">
@@ -8,7 +8,7 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn variant="tonal" @click="internalValue = false"> Cancelar </v-btn>
+        <v-btn variant="tonal" @click="model = false"> Cancelar </v-btn>
         <v-btn color="error" variant="elevated" @click="$emit('confirm')"> Excluir </v-btn>
       </v-card-actions>
     </v-card>
@@ -16,23 +16,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 
-// Definindo as Props
-interface Props {
-  modelValue: boolean;
-  itemName?: string;
-}
+const model = defineModel<boolean>({ default: false });
 
-const props = defineProps<Props>();
-
-// Definindo os Emits
-const emit = defineEmits(['update:modelValue', 'confirm']);
-
-// Computed para sincronizar o v-model do dialog com a prop do pai
-const internalValue = computed({
-  get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value)
-});
+defineProps<{ itemName: string }>();
+defineEmits(['confirm']);
 
 </script>

@@ -73,7 +73,6 @@ const validarESalvar = async () => {
 };
 
 const abrirNova = () => {
-  isEditMode.value = false;
   dialog.value = true;
 }; 
 
