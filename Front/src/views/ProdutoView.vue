@@ -2,7 +2,10 @@
   <v-container>
     <div class="d-flex justify-space-between align-center mb-4">
       <h1>Produtos</h1>
-      <v-btn color="primary" @click="abrirNovo">Novo Produto</v-btn>
+      <v-btn color="primary" @click="abrirNovo">
+        <v-icon icon="mdi-plus-circle"></v-icon>
+        <span class="d-none d-sm-inline ml-2">Novo Produto</span>
+      </v-btn>
     </div>
 
     <ProdutoTable 
@@ -83,9 +86,10 @@ const isEditMode = ref(false);
 const formRef = ref<any>(null);
 
 const criarProdutoVazio = (): Produto => ({
+  id: undefined,
   nome: '',
   preco: '',
-  categoria: { nome: '' }
+  categoria: { id: undefined, nome: '' }
 });
 
 // Inicialização seguindo o padrão que discutimos

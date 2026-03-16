@@ -8,8 +8,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/categorias',
     name: 'Categorias',
-    // Lazy loading: o componente só é carregado se o usuário acessar essa rota
-    component: () => import('@/views/CategoriaView.vue')
+    component: () => import('@/views/CategoriaView.vue') // Lazy loading: o componente só é carregado se o usuário acessar essa rota
     },
     {
       path: '/produtos',

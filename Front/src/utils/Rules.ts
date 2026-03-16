@@ -1,6 +1,10 @@
 export const rules = {
-  required: (value: any) => !!value || 'Campo obrigatório',
-  
+  required: (value: any) => {
+    if (typeof value === 'object') {
+      return !!value.id || 'Campo obrigatório';
+    }
+    return !!value || 'Campo obrigatório';
+  },
   positivo: (value: number) => value >= 0 || 'O preço não pode ser negativo',
   
   isNumber: (value: any) => {

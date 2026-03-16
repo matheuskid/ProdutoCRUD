@@ -2,7 +2,10 @@
   <v-container>
     <div class="d-flex justify-space-between align-center mb-4">
       <h1>Categorias</h1>
-      <v-btn color="primary" @click="abrirNova">Nova Categoria</v-btn>
+      <v-btn color="primary" @click="abrirNova">
+        <v-icon icon="mdi-plus-circle"></v-icon>
+        <span class="d-none d-sm-inline ml-2">Nova Categoria</span>
+      </v-btn>
     </div>
     
     <CategoriaTable 
