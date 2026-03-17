@@ -8,12 +8,16 @@
       </v-btn>
     </div>
 
-    <BaseTable 
-      :headers="headers" 
+    <BaseTable
+      :pagination="true"
+      v-model:items-per-page="itemsPerPage"
+      :headers="headers"
       :items="produtoStore.produtos"
+      :total-items="produtoStore.totalItems"
       :loading="produtoStore.loading"
       @edit="abrirEditar"
       @delete="abrirDelete"
+      @update:options="atualizaPaginacao"
     >
       <template #item.preco="{ item }">
         R$ {{ item.preco }}
@@ -89,6 +93,7 @@ import { rules } from '@/utils/Rules';
 
 const produtoStore = ProdutoStore();
 const categoriaStore = CategoriaStore();
+const itemsPerPage = ref(10);
 
 const headers = [
   { title: 'Nome', key: 'nome' },
@@ -113,9 +118,14 @@ const criarProdutoVazio = (): Produto => ({
 const produto = ref<Produto>(criarProdutoVazio());
 
 onMounted(() => {
-  produtoStore.listarProdutos();
+  produtoStore.listarProdutos(0, itemsPerPage.value);
   categoriaStore.listarCategorias();
 });
+
+const atualizaPaginacao = (options: any) => {
+  const { page, itemsPerPage } = options;
+  produtoStore.listarProdutos(page - 1, itemsPerPage);
+};
 
 const validarESalvar = async () => {
   const { valid } = await formRef.value.validate();

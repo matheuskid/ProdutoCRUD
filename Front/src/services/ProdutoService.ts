@@ -11,7 +11,7 @@ export interface Produto {
 }
 
 export const ProdutoService = {
-  getAll: () => api.get<Produto[]>('/api/produtos'),
+  getAll: (page: number, size: number) => api.get('/api/produtos', { params: { page, size } }),
   create: (data: Omit<Produto, 'id'>) => api.post('/api/produtos', data),
   update: (data: Produto) => api.put(`/api/produtos/${data.id}`, data),
   delete: (id: number) => api.delete(`/api/produtos/${id}`)

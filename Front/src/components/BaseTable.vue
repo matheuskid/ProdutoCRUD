@@ -1,7 +1,15 @@
 <template>
-  <v-data-table :headers="headers" :items="items" :loading>
-    
-    <template v-for="(_, name) in $slots" v-slot:[name]="slotData">
+  <component
+    :is="tableComponent"
+    v-model:items-per-page="itemsPerPage"
+    :headers="headers"
+    :items="items"
+    :loading="loading"
+    :items-length="totalItems"
+    @update:options="$emit('update:options', $event)"
+  >
+
+    <template v-for="(_, name) in $slots" v-slot:[name]="slotData"> <!-- Cria slots personalizados (vindos do pai) -->
       <slot :name="name" v-bind="slotData"></slot>
     </template>
 
@@ -22,13 +30,20 @@
         ></v-btn>
       </div>
     </template>
-
-  </v-data-table>
+  </component>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 
-defineProps<{ headers: any[], items: any[], loading: boolean }>();
-defineEmits(['edit', 'delete']);
+
+const itemsPerPage = defineModel<number>('itemsPerPage', { default: 10 });
+
+const tableComponent = computed(() => 
+  props.pagination ? 'v-data-table-server' : 'v-data-table'
+);
+
+const props = defineProps<{ headers: any[], items: any[], totalItems?: number, loading: boolean, pagination: boolean }>();
+defineEmits(['edit', 'delete', 'update:options', 'update:itemsPerPage']);
 
 </script>

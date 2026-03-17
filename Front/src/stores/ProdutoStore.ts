@@ -7,14 +7,16 @@ const notify = NotificationStore();
 export const ProdutoStore = defineStore('produto', {
   state: () => ({
     produtos: [] as Produto[],
-    loading: false
+    loading: false,
+    totalItems: 0
   }),
   actions: {
-    async listarProdutos() {
+    async listarProdutos(page: number, size: number) {
       this.loading = true;
       try {
-        const { data } = await ProdutoService.getAll();
-        this.produtos = data;
+        const response = await ProdutoService.getAll(page, size);
+        this.produtos = response.data.content;
+        this.totalItems = response.data.totalElements;
       } finally {
         this.loading = false;
       }

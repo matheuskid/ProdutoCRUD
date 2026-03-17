@@ -8,7 +8,8 @@
       </v-btn>
     </div>
     
-    <BaseTable 
+    <BaseTable
+      :pagination="false"
       :headers="headers" 
       :items="categoriaStore.categorias"
       :loading="categoriaStore.loading"
