@@ -8,12 +8,22 @@
       </v-btn>
     </div>
 
-    <ProdutoTable 
-      :items="produtoStore.produtos" 
+    <BaseTable 
+      :headers="headers" 
+      :items="produtoStore.produtos"
       :loading="produtoStore.loading"
-      @edit="abrirEdtiar"
+      @edit="abrirEditar"
       @delete="abrirDelete"
-    />
+    >
+      <template #item.preco="{ item }">
+        R$ {{ item.preco }}
+      </template>
+
+      <template #item.categoria="{ item }">
+        {{ item.categoria.nome }}
+      </template>
+    </BaseTable>
+    
 
     <v-dialog v-model="dialog" max-width="600">
       <v-card :title="isEditMode ? 'Editar Produto' : 'Novo Produto'">
@@ -72,13 +82,20 @@
 import { ref, onMounted } from 'vue';
 import { ProdutoStore } from '@/stores/ProdutoStore';
 import { CategoriaStore } from '@/stores/CategoriaStore';
-import ProdutoTable from '@/components/ProdutoTable.vue';
 import ConfirmDeleteDialog from '@/components/ConfirmDeleteDialog.vue';
+import BaseTable from '@/components/BaseTable.vue';
 import type { Produto } from '@/services/ProdutoService';
 import { rules } from '@/utils/Rules';
 
 const produtoStore = ProdutoStore();
 const categoriaStore = CategoriaStore();
+
+const headers = [
+  { title: 'Nome', key: 'nome' },
+  { title: 'Preço', key: 'preco' },
+  { title: 'Categoria', key: 'categoria' },
+  { title: 'Ações', key: 'actions', sortable: false }
+];
 
 const dialog = ref(false);
 const dialogDelete = ref(false);
@@ -113,7 +130,7 @@ const abrirNovo = () => {
   dialog.value = true;
 };
 
-const abrirEdtiar = (item: Produto) => {
+const abrirEditar = (item: Produto) => {
   produto.value = JSON.parse(JSON.stringify(item));
   isEditMode.value = true;
   dialog.value = true;

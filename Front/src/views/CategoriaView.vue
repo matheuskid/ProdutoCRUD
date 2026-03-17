@@ -8,12 +8,14 @@
       </v-btn>
     </div>
     
-    <CategoriaTable 
-      :items="store.categorias" 
-      :loading="store.loading"
+    <BaseTable 
+      :headers="headers" 
+      :items="categoriaStore.categorias"
+      :loading="categoriaStore.loading"
       @edit="abrirEditar"
       @delete="abrirDelete"
-    />
+    >
+    </BaseTable>
 
     <v-dialog v-model="dialog" max-width="500">
       <v-card :title="isEditMode ? 'Editar Categoria' : 'Nova Categoria'">
@@ -46,12 +48,18 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { CategoriaStore } from '@/stores/CategoriaStore';
-import CategoriaTable from '@/components/CategoriaTable.vue';
 import type { Categoria } from '@/services/CategoriaService';
+import BaseTable from '@/components/BaseTable.vue';
 import ConfirmDeleteDialog from '@/components/ConfirmDeleteDialog.vue';
 import { rules } from '@/utils/Rules';
 
-const store = CategoriaStore();
+const categoriaStore = CategoriaStore();
+
+const headers = [
+  { title: 'Nome', key: 'nome' },
+  { title: 'Ações', key: 'actions', sortable: false }
+];
+
 const dialog = ref(false);
 const isEditMode = ref(false);
 const dialogDelete = ref(false);
@@ -61,7 +69,7 @@ const criarCategoriaVazia = (): Categoria => ({ nome: '' });
 
 const categoria = ref<Categoria>(criarCategoriaVazia());
 
-onMounted(() => store.listarCategorias());
+onMounted(() => categoriaStore.listarCategorias());
 
 const validarESalvar = async () => {
   const { valid } = await formRef.value.validate();
@@ -90,15 +98,15 @@ const abrirDelete = (id: number, nome: string) => {
 
 const salvar = async () => {
   if (isEditMode.value) {
-    await store.atualizarCategoria(categoria.value);
+    await categoriaStore.atualizarCategoria(categoria.value);
   } else {
-    await store.adicionarCategoria(categoria.value);
+    await categoriaStore.adicionarCategoria(categoria.value);
   }
 };
 
 const deletarCategoria = async () => {
   if (categoria.value.id) {
-    await store.deletarCategoria(categoria.value.id);
+    await categoriaStore.deletarCategoria(categoria.value.id);
     dialogDelete.value = false;
   }
   categoria.value = criarCategoriaVazia();
