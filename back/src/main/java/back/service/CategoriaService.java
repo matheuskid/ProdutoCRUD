@@ -1,7 +1,7 @@
 package back.service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,8 +22,8 @@ public class CategoriaService {
         this.produtoRepository = produtoRepository;
     }
 
-    public Page<Categoria> listarCategorias(Pageable pageable) {
-        return categoriaRepository.findAll(pageable);
+    public List<Categoria> listarCategorias() {
+        return categoriaRepository.findAll();
     }
     
     public Categoria criarCategoria(Categoria categoria) {

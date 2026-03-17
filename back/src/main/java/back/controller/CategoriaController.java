@@ -8,10 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 
+import java.util.List;
 import back.model.Categoria;
 import back.service.CategoriaService;
 import jakarta.validation.Valid;
@@ -28,8 +26,8 @@ public class CategoriaController {
     private CategoriaService service;
 
     @GetMapping
-    public Page<Categoria> listarTodas(@PageableDefault(page = 0,size = 10, sort = "id") Pageable pageable) {
-        return service.listarCategorias(pageable);
+    public List<Categoria> listarTodas() {
+        return service.listarCategorias();
     }
 
     @PostMapping
