@@ -2,7 +2,6 @@ package back.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,7 +18,7 @@ public class ProdutoService {
         this.produtoRepository = produtoRepository;
     }
 
-    public Page<Produto> listarProdutos(@PageableDefault(size = 10, sort = "id")Pageable pageable) {
+    public Page<Produto> listarProdutos(Pageable pageable) {
         return produtoRepository.findAll(pageable);
     }
 

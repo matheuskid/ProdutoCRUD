@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 
 import back.model.Categoria;
 import back.service.CategoriaService;
@@ -27,7 +28,7 @@ public class CategoriaController {
     private CategoriaService service;
 
     @GetMapping
-    public Page<Categoria> listarTodas(Pageable pageable) {
+    public Page<Categoria> listarTodas(@PageableDefault(page = 0,size = 10, sort = "id") Pageable pageable) {
         return service.listarCategorias(pageable);
     }
 

@@ -2,7 +2,6 @@ package back.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -23,7 +22,7 @@ public class CategoriaService {
         this.produtoRepository = produtoRepository;
     }
 
-    public Page<Categoria> listarCategorias(@PageableDefault(size = 10, sort = "id") Pageable pageable) {
+    public Page<Categoria> listarCategorias(Pageable pageable) {
         return categoriaRepository.findAll(pageable);
     }
     
