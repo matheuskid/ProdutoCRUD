@@ -66,7 +66,7 @@ const isEditMode = ref(false);
 const dialogDelete = ref(false);
 const formRef = ref<any>(null);
 
-const criarCategoriaVazia = (): Categoria => ({ nome: '' });
+const criarCategoriaVazia = (): Categoria => ({ id: undefined, nome: '' });
 
 const categoria = ref<Categoria>(criarCategoriaVazia());
 

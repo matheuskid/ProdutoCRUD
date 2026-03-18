@@ -23,8 +23,8 @@ export const CategoriaStore = defineStore('categoria', {
     async adicionarCategoria(categoria: Omit<Categoria, 'id'>) {
       this.loading = true;
       try {
-        const { data } = await CategoriaService.create(categoria);
-        this.categorias.push(data);
+        await CategoriaService.create(categoria);
+        this.listarCategorias();
         notify.show('Categoria adicionada com sucesso!', 'success');
       } catch (error: any) {
         if (error.response?.status === 409) {
@@ -40,11 +40,8 @@ export const CategoriaStore = defineStore('categoria', {
     async atualizarCategoria(categoria: Categoria) {
       this.loading = true;
       try {
-        const { data } = await CategoriaService.update(categoria);
-        const index = this.categorias.findIndex((c) => c.id === categoria.id);
-        if (index !== -1) {
-          this.categorias[index] = data;
-        }
+        await CategoriaService.update(categoria);
+        this.listarCategorias();
         notify.show('Categoria atualizada com sucesso!', 'success');
       } catch (error: any) {
         if (error.response?.status === 409) {
@@ -61,7 +58,7 @@ export const CategoriaStore = defineStore('categoria', {
       this.loading = true;
       try {
         await CategoriaService.delete(id);
-        this.categorias = this.categorias.filter((c) => c.id !== id);
+        this.listarCategorias();
         notify.show('Categoria removida com sucesso!', 'success');
       } catch (error: any) {
         if (error.response?.status === 409) {

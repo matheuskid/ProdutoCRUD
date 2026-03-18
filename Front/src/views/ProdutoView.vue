@@ -10,7 +10,8 @@
 
     <BaseTable
       :pagination="true"
-      v-model:items-per-page="itemsPerPage"
+      v-model:items-per-page="produtoStore.size"
+      :page="produtoStore.page + 1"
       :headers="headers"
       :items="produtoStore.produtos"
       :total-items="produtoStore.totalItems"
@@ -93,7 +94,6 @@ import { rules } from '@/utils/Rules';
 
 const produtoStore = ProdutoStore();
 const categoriaStore = CategoriaStore();
-const itemsPerPage = ref(10);
 
 const headers = [
   { title: 'Nome', key: 'nome' },
@@ -118,13 +118,15 @@ const criarProdutoVazio = (): Produto => ({
 const produto = ref<Produto>(criarProdutoVazio());
 
 onMounted(() => {
-  produtoStore.listarProdutos(0, itemsPerPage.value);
+  produtoStore.listarProdutos();
   categoriaStore.listarCategorias();
 });
 
 const atualizaPaginacao = (options: any) => {
-  const { page, itemsPerPage } = options;
-  produtoStore.listarProdutos(page - 1, itemsPerPage);
+  produtoStore.page = options.page - 1;
+  produtoStore.size = options.itemsPerPage;
+  produtoStore.totalItems = options.itemsLength;
+  produtoStore.listarProdutos();
 };
 
 const validarESalvar = async () => {

@@ -2,6 +2,7 @@
   <component
     :is="tableComponent"
     v-model:items-per-page="itemsPerPage"
+    :page="page"
     :headers="headers"
     :items="items"
     :loading="loading"
@@ -36,14 +37,27 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-
 const itemsPerPage = defineModel<number>('itemsPerPage', { default: 10 });
 
 const tableComponent = computed(() => 
   props.pagination ? 'v-data-table-server' : 'v-data-table'
 );
 
-const props = defineProps<{ headers: any[], items: any[], totalItems?: number, loading: boolean, pagination: boolean }>();
+const props = withDefaults(defineProps<{
+  headers: any[],
+  items: any[],
+  page?: number,
+  totalItems?: number,
+  loading: boolean,
+  pagination: boolean
+}>(), {
+  page: 1,             
+  totalItems: 0,     
+  loading: false,
+  pagination: true,
+  items: () => []
+});
+
 defineEmits(['edit', 'delete', 'update:options', 'update:itemsPerPage']);
 
 </script>

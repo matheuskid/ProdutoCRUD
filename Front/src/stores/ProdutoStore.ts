@@ -8,13 +8,15 @@ export const ProdutoStore = defineStore('produto', {
   state: () => ({
     produtos: [] as Produto[],
     loading: false,
+    page: 0,
+    size: 10,
     totalItems: 0
   }),
   actions: {
-    async listarProdutos(page: number, size: number) {
+    async listarProdutos() {
       this.loading = true;
       try {
-        const response = await ProdutoService.getAll(page, size);
+        const response = await ProdutoService.getAll(this.page, this.size);
         this.produtos = response.data.content;
         this.totalItems = response.data.totalElements;
       } finally {
@@ -25,8 +27,8 @@ export const ProdutoStore = defineStore('produto', {
     async adicionarProduto(produto: Omit<Produto, 'id'>) {
       this.loading = true;
       try {
-        const { data } = await ProdutoService.create(produto);
-        this.produtos.push(data);
+        await ProdutoService.create(produto);
+        this.listarProdutos();
         notify.show('Produto adicionado com sucesso!', 'success');
       } catch (error: any) {
         notify.show('Erro inesperado ao adicionar produto.', 'error');
@@ -38,11 +40,8 @@ export const ProdutoStore = defineStore('produto', {
     async atualizarProduto(produto: Produto) {
       this.loading = true;
       try {
-        const { data } = await ProdutoService.update(produto);
-        const index = this.produtos.findIndex((p) => p.id === produto.id);
-        if (index !== -1) {
-          this.produtos[index] = data;
-        }
+        await ProdutoService.update(produto);
+        this.listarProdutos();
         notify.show('Produto atualizado com sucesso!', 'success');
       } catch (error: any) {
         notify.show('Erro inesperado ao atualizar produto.', 'error');
@@ -55,7 +54,7 @@ export const ProdutoStore = defineStore('produto', {
       this.loading = true;
       try {
         await ProdutoService.delete(id);
-        this.produtos = this.produtos.filter((p) => p.id !== id);
+        this.listarProdutos();
         notify.show('Produto removido com sucesso!', 'success');
       } catch (error: any) {
         notify.show('Erro inesperado ao remover produto.', 'error');

@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
 
@@ -20,8 +20,8 @@ public class Produto {
     @Column(nullable = false)
     private String nome;
 
-    @Column(nullable = false, columnDefinition = "NUMERIC CHECK (preco >= 0)")
-    @PositiveOrZero(message = "Preco nao pode ser negativo")
+    @Column(nullable = false, columnDefinition = "NUMERIC CHECK (preco > 0)")
+    @Positive(message = "Preco nao pode ser negativo ou zero")
     private BigDecimal preco;
 
     @ManyToOne

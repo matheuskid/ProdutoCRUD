@@ -5,7 +5,8 @@ export const rules = {
     }
     return !!value || 'Campo obrigatório';
   },
-  positivo: (value: number) => value >= 0 || 'O preço não pode ser negativo',
+  
+  positivo: (value: number) => value > 0 || 'O preço não pode ser negativo ou 0',
   
   isNumber: (value: any) => {
     const pattern = /^\d+(\.\d{1,2})?$/; // Aceita números com até 2 casas decimais
