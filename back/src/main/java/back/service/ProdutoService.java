@@ -23,7 +23,7 @@ public class ProdutoService {
     }
 
     public Produto criarProduto(Produto produto) {
-        return produtoRepository.save(new Produto(produto.getNome(), produto.getPreco(), produto.getCategoria()));
+        return produtoRepository.save(produto);
     }
 
     public Produto atualizarProduto(Long id, Produto produto) {
@@ -31,11 +31,14 @@ public class ProdutoService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado!");
         }
 
-        produto.setNome(produto.getNome());
-        produto.setPreco(produto.getPreco());
-        produto.setCategoria(produto.getCategoria());
-
-        return produtoRepository.save(produto);
+        return produtoRepository.findById(id)
+                .map(existingProduto -> {
+                    existingProduto.setNome(produto.getNome());
+                    existingProduto.setPreco(produto.getPreco());
+                    existingProduto.setCategoria(produto.getCategoria());
+                    return produtoRepository.save(existingProduto);
+                })
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado!"));
     }
 
     public void deletarProduto(Long id) {

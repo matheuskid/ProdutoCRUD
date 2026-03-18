@@ -10,4 +10,34 @@ INSERT INTO produto (nome, preco, categoria_id)
 VALUES ('Spring Boot em Ação', 115.00, 3);
 
 INSERT INTO produto (nome, preco, categoria_id) 
-VALUES ('Devoradores de Estrelas', 60.00, 3);
+VALUES ('Teste', 60.00, 3);
+
+INSERT INTO produto (nome, preco, categoria_id) 
+VALUES ('Teste', 60.00, 3);
+
+INSERT INTO produto (nome, preco, categoria_id) 
+VALUES ('Teste', 60.00, 3);
+
+INSERT INTO produto (nome, preco, categoria_id) 
+VALUES ('Teste', 60.00, 3);
+
+INSERT INTO produto (nome, preco, categoria_id) 
+VALUES ('Teste', 60.00, 3);
+
+INSERT INTO produto (nome, preco, categoria_id) 
+VALUES ('Teste', 60.00, 3);
+
+INSERT INTO produto (nome, preco, categoria_id) 
+VALUES ('Teste', 60.00, 3);
+
+INSERT INTO produto (nome, preco, categoria_id) 
+VALUES ('Teste', 60.00, 3);
+
+INSERT INTO produto (nome, preco, categoria_id) 
+VALUES ('Teste', 60.00, 3);
+
+INSERT INTO produto (nome, preco, categoria_id) 
+VALUES ('Teste', 60.00, 3);
+
+INSERT INTO produto (nome, preco, categoria_id) 
+VALUES ('Arroz 1kg', 28.90, 2);
