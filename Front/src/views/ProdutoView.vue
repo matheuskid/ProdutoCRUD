@@ -28,53 +28,17 @@
         {{ item.categoria.nome }}
       </template>
     </BaseTable>
-    
 
-    <v-dialog v-model="dialog" max-width="600">
-      <v-card :title="isEditMode ? 'Editar Produto' : 'Novo Produto'">
-        <v-card-text>
-          <v-form ref="formRef">
-            <v-row>
-              <v-col cols="12">
-                <v-text-field 
-                  v-model="produto.nome"
-                  :rules = "[rules.required, rules.noEmpty]"
-                  label="Nome do Produto" 
-                  variant="outlined"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-text-field 
-                  v-model="produto.preco" 
-                  :rules = "[rules.required, rules.positivo, rules.isNumber]"
-                  label="Preço" 
-                  prefix="R$"
-                  type="number"
-                  variant="outlined"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-select
-                  v-model="produto.categoria" 
-                  :items="categoriaStore.categorias"
-                  :rules = "[rules.required]"
-                  item-title="nome"
-                  return-object
-                  label="Categoria"
-                  variant="outlined"
-                ></v-select>
-              </v-col>
-            </v-row>
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn variant="text" @click="fecharDialog">Cancelar</v-btn>
-          <v-btn color="primary" @click="validarESalvar">Salvar</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
+    <BaseDialog
+      v-model="dialog"
+      :title = "isEditMode ? 'Editar Produto' : 'Adicionar Produto'"
+      :loading="produtoStore.loading"
+      @save="validarESalvar"
+      @close="fecharDialog"
+      >
+      <ProdutoForm ref="formRef" :model="produto"></ProdutoForm>
+    </BaseDialog>
+      
     <ConfirmDeleteDialog
       v-model="dialogDelete"
       :item-name="produto.nome"
@@ -90,7 +54,8 @@ import { CategoriaStore } from '@/stores/CategoriaStore';
 import ConfirmDeleteDialog from '@/components/ConfirmDeleteDialog.vue';
 import BaseTable from '@/components/BaseTable.vue';
 import type { Produto } from '@/services/ProdutoService';
-import { rules } from '@/utils/Rules';
+import ProdutoForm from '@/components/forms/ProdutoForm.vue';
+import BaseDialog from '@/components/BaseDialog.vue';
 
 const produtoStore = ProdutoStore();
 const categoriaStore = CategoriaStore();
@@ -114,7 +79,6 @@ const criarProdutoVazio = (): Produto => ({
   categoria: { id: undefined, nome: '' }
 });
 
-// Inicialização seguindo o padrão que discutimos
 const produto = ref<Produto>(criarProdutoVazio());
 
 onMounted(() => {

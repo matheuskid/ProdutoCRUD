@@ -18,25 +18,16 @@
     >
     </BaseTable>
 
-    <v-dialog v-model="dialog" max-width="500">
-      <v-card :title="isEditMode ? 'Editar Categoria' : 'Nova Categoria'">
-        <v-card-text>
-          <v-form ref="formRef">
-          <v-text-field 
-            v-model="categoria.nome" 
-            label="Nome da Categoria"
-            variant="outlined"
-            :rules = "[rules.required, rules.noEmpty]"
-          ></v-text-field>
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn variant="text" @click="fecharDialog">Cancelar</v-btn>
-          <v-btn color="primary" @click="validarESalvar">Salvar</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <BaseDialog
+      v-model="dialog"
+      :title = "isEditMode ? 'Editar Categoria' : 'Adicionar Categoria'"
+      :loading="categoriaStore.loading"
+      @save="validarESalvar"
+      @close="fecharDialog"
+      >
+      <CategoriaForm ref="formRef" :model="categoria"></CategoriaForm>
+    </BaseDialog>
+
 
     <ConfirmDeleteDialog
       v-model="dialogDelete"
@@ -50,9 +41,10 @@
 import { ref, onMounted } from 'vue';
 import { CategoriaStore } from '@/stores/CategoriaStore';
 import type { Categoria } from '@/services/CategoriaService';
+import BaseDialog from '@/components/BaseDialog.vue';
 import BaseTable from '@/components/BaseTable.vue';
 import ConfirmDeleteDialog from '@/components/ConfirmDeleteDialog.vue';
-import { rules } from '@/utils/Rules';
+import CategoriaForm from '@/components/forms/CategoriaForm.vue';
 
 const categoriaStore = CategoriaStore();
 
