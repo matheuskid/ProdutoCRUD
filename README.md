@@ -9,33 +9,28 @@ Este projeto é uma aplicação Full Stack desenvolvida como parte do meu plano 
 * **Banco de Dados:** PostgreSQL.
 * **Ferramentas:** Axios, TypeScript.
 
+
 ## 📌 Principais Implementações
+
 
 * **Arquitetura REST:** API estruturada com endpoints para operações CRUD completas.
 * **Frontend Reativo:** Interface construída com componentes reutilizáveis e validações em tempo real.
 * **Integração de Dados:** Consumo de API assíncrono utilizando Axios com tratamento de estados de carregamento e erro.
 
-## 🚀 Como Rodar o Projeto
 
+## 🚀 Diferenciais Técnicos (Full Stack)
 
-1. **Iniciar o Backend (Spring Boot):**
-```bash
-cd backend
-./mvnw spring-boot:run
+### 💻 Frontend (Vue 3 + Vuetify + Pinia + Axios)
+* **Componentes Reutilizáveis:** Desenvolimento de componentes base reutilizáveis (ex: `BaseTable`, `BaseDialog`), garantindo consistência e facilidade de manutenção.
+* **Gerenciamento de Estado com Pinia:** Uso do Pinia para gerenciamento de estado, separando a lógica de negócio da interface.
+* **Paginação Server-Side:** Implementação de tabelas inteligentes que consultam o banco de dados sob demanda.
+* 
 
-```
+### ⚙️ Backend (Spring Boot)
+* **Paginação:** Uso de `Pageable` para processamento eficiente de consultas ao banco de dados.
+* **Arquitetura em Camadas:** Estrutura em camadas: Controller -> Service -> Repository.
+* **Padronização REST:** API desenhada seguindo as melhores práticas, com códigos de status apropriados e estruturas de JSON consistentes.
 
-
-2. **Iniciar o Frontend (Vue 3):**
-```bash
-cd frontend
-npm install
-npm run dev
-
-```
-
-
-## 📐 Estrutura do Projeto
-
-* `/backend`: Contém a lógica de negócio, entidades e repositórios.
-* `/frontend`: Contém as views, stores do Pinia e componentes Vuetify.
+### 🎨 Outros
+* **Feedback Visual:** Uso de estados de `loading`, diálogos de confirmação e tratativas de erro.
+* **Formulários Dinâmicos:** Sistema de validação de formulário que impede o envio de dados inconsistentes antes mesmo da chamada à API.
